@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Booking - Home</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: black; /* Light Gray */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: violet; /* Dark Blue */
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: violet; /* Slightly Lighter Dark Blue */
+            margin-bottom: 30px;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+            gap: 20px;
+            width: 100%;
+            max-width: 900px; /* Increased max-width for more cards */
+            padding: 10px;
+        }
+        .card {
+            background-color: #ffffff; /* White */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid #ddd; /* Added a subtle border */
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Lift effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            width: 100%;
+            height: 160px; /* Slightly increased image height */
+            object-fit: cover;
+            border-bottom: 1px solid #eee; /* Separator for image */
+        }
+        .card h3 {
+            color: #2c3e50; /* Dark Blue */
+            margin: 15px 0;
+            font-size: 1.4em; /* Slightly larger title */
+        }
+        .card a {
+            display: block;
+            background-color: #3498db; /* Bright Blue */
+            color: white;
+            padding: 12px; /* Increased padding */
+            text-decoration: none;
+            border-radius: 0 0 8px 8px; /* Rounded only at bottom */
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        .card a:hover {
+            background-color: #2980b9; /* Darker Blue */
+        }
+        p {
+            margin-top: 30px;
+        }
+        p a {
+            color: #e74c3c; /* Red for Logout */
+            border: 2px solid #e74c3c; /* Border for logout button */
+            padding: 8px 15px; /* Padding for logout button */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        p a:hover {
+            text-decoration: none;
+            background-color: #e74c3c;
+            color: white;
+        }
+        .welcome-message {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #ecf0f1; /* Light gray for welcome text on black background */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="welcome-message">Welcome, {{ username }}!</h1>
+    <h2>Book Your Travel</h2>
+    <div class="card-container">
+        <div class="card">
+            <img src="https://placehold.co/400x160/2980b9/ffffff?text=Flights" alt="Flights">
+            <h3>Flights</h3>
+            <a href="/book/flights">Book Now</a>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/400x160/27ae60/ffffff?text=Hotels" alt="Hotels">
+            <h3>Hotels</h3>
+            <a href="/book/hotels">Book Now</a>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/400x160/8e44ad/ffffff?text=Buses" alt="Buses">
+            <h3>Buses</h3>
+            <a href="/book/buses">Book Now</a>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/400x160/f39c12/ffffff?text=Trains" alt="Trains">
+            <h3>Trains</h3>
+            <a href="/book/trains">Book Now</a>
+        </div>
+        <div class="card">
+            <img src="https://placehold.co/400x160/3498db/ffffff?text=Past+Bookings" alt="Past Bookings">
+            <h3>Past Bookings</h3>
+            <a href="/past_bookings">View All</a>
+        </div>
+    </div>
+    <p><a href="/logout">Logout</a></p>
+</body>
+</html>

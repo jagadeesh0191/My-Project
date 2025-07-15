@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Trains</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6; /* Light Gray */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #2c3e50; /* Dark Blue */
+            margin-bottom: 30px;
+        }
+        form {
+            background-color: #ffffff; /* White */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="date"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #3498db; /* Bright Blue */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9; /* Darker Blue */
+        }
+        p {
+            margin-top: 20px;
+        }
+        a {
+            color: #3498db; /* Bright Blue */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book a Train</h1>
+    <form method="POST">
+        <div>
+            <label for="source">From:</label>
+            <input type="text" id="source" name="source" required>
+        </div>
+        <div>
+            <label for="destination">To:</label>
+            <input type="text" id="destination" name="destination" required>
+        </div>
+        <div>
+            <label for="date">Travel Date:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <button type="submit">Book Train</button>
+    </form>
+    <p><a href="/home">Back to Home</a></p>
+</body>
+</html>

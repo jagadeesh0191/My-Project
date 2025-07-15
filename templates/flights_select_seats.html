@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Flight Seats</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6; /* Light Gray */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #2c3e50; /* Dark Blue */
+            margin-bottom: 30px;
+        }
+        .seat-selection {
+            background-color: #ffffff; /* White */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .seat-map {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr); /* More columns for flights */
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db; /* Blue for available */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .seat.selected {
+            background-color: #28a745; /* Green for selected */
+        }
+        .seat.occupied {
+            background-color: #e74c3c; /* Red for occupied */
+            cursor: not-allowed;
+        }
+        .seat:not(.occupied):hover {
+            background-color: #2980b9;
+        }
+        .confirm-button {
+            background-color: #27ae60; /* Green */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .confirm-button:hover {
+            background-color: #229a54; /* Darker Green */
+        }
+        .back-link {
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        .payment-method {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select Seats for {{ selected_option.name }}</h1>
+    <div class="seat-selection">
+        <label for="number-of-people">Number of People:</label>
+        <input type="number" id="number-of-people" min="1" max="5" value="1" onchange="updateSeatSelection()">
+        
+        <div class="seat-map">
+            {% for seat in seats %}
+                <div class="seat {% if seat.occupied %}occupied{% elif seat.selected %}selected{% endif %}" 
+                     data-seat-number="{{ seat.number }}"
+                     onclick="toggleSeat(this)">
+                    {{ seat.number }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="payment-method">
+            <label for="payment-method">Select Payment Method:</label>
+            <select id="payment-method" name="payment_method">
+                <option value="credit_card">Credit Card</option>
+                <option value="debit_card">Debit Card</option>
+                <option value="paypal">PayPal</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="upi">upi</option>
+            </select>
+        </div>
+
+        <form action="/payment" method="POST" id="seat-form">
+            <input type="hidden" name="selected_seats" id="selected-seats-input">
+            <input type="hidden" name="payment_method" id="payment-method-input">
+            <button type="submit" class="confirm-button">Confirm Seats & Proceed to Payment</button>
+        </form>
+    </div>
+    <p class="back-link"><a href="/book/flights/available">Back to Available Flights</a></p>
+
+    <script>
+        let selectedSeats = [];
+        let maxSeats = 1;
+
+        function updateSeatSelection() {
+            maxSeats = parseInt(document.getElementById('number-of-people').value);
+            selectedSeats = []; // Reset selected seats
+            document.querySelectorAll('.seat').forEach(seat => {
+                seat.classList.remove('selected'); // Deselect all seats
+            });
+        }
+
+        function toggleSeat(seatElement) {
+            if (seatElement.classList.contains('occupied')) {
+                return;
+            }
+
+            const seatNumber = seatElement.dataset.seatNumber;
+            const index = selectedSeats.indexOf(seatNumber);
+
+            if (index > -1) {
+                // Seat is already selected, deselect it
+                selectedSeats.splice(index, 1);
+                seatElement.classList.remove('selected');
+            } else {
+                // Seat is not selected, select it if we haven't reached the max
+                if (selectedSeats.length < maxSeats) {
+                    selectedSeats.push(seatNumber);
+                    seatElement.classList.add('selected');
+                }
+            }
+            document.getElementById('selected-seats-input').value = JSON.stringify(selectedSeats);
+        }
+
+        // Update the payment method input when the selection changes
+        document.getElementById('payment-method').addEventListener('change', function() {
+            document.getElementById('payment-method-input').value = this.value;
+        });
+    </script>
+</body>
+</html>

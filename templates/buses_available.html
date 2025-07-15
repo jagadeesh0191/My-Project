@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Buses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6; /* Light Gray */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #2c3e50; /* Dark Blue */
+            margin-bottom: 30px;
+        }
+        .available-options {
+            background-color: #ffffff; /* White */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        .option-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .option-card:hover {
+            background-color: #f0f0f0;
+        }
+        .option-details {
+            flex-grow: 1;
+        }
+        .option-details h3 {
+            margin: 0 0 5px 0;
+            color: #3498db;
+        }
+        .option-details p {
+            margin: 0;
+            font-size: 14px;
+        }
+        .select-button {
+            background-color: #28a745; /* Green */
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            text-decoration: none; /* For anchor tag */
+            display: inline-block; /* For anchor tag */
+        }
+        .select-button:hover {
+            background-color: #218838; /* Darker Green */
+        }
+        .back-link {
+            margin-top: 20px;
+        }
+        .back-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Buses for {{ booking.source }} to {{ booking.destination }} on {{ booking.date }}</h1>
+    <div class="available-options">
+        {% if buses %}
+            {% for option in buses %}
+                <div class="option-card">
+                    <div class="option-details">
+                        <h3>{{ option.name }}</h3>
+                        <p>Departure: {{ option.departure_time }}</p>
+                        <p>Arrival: {{ option.arrival_time }}</p>
+                        <p>Price: ${{ option.price }}</p>
+                    </div>
+                    <!-- Corrected link for seat selection -->
+                    <a href="{{ url_for('select_bus_seats', bus_id=option.id) }}" class="select-button">Select</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No buses available for this route and date.</p>
+        {% endif %}
+    </div>
+    <p class="back-link"><a href="/book/buses">Back to Bus Booking</a></p>
+</body>
+</html>

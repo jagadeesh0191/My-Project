@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Bookings | Travel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-extrabold text-gray-900">Your Past Bookings</h1>
+            <a href="/home" class="text-blue-600 hover:text-blue-800 font-medium">Back to Home</a>
+        </div>
+
+        {% if bookings %}
+            <div class="space-y-6 w-full">
+                {% for booking in bookings %}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-800 capitalize">{{ booking.booking_type }} Booking</h2>
+                                <p class="text-sm text-gray-500 mt-1">Booking ID: <span class="font-semibold text-gray-700">{{ booking.booking_id }}</span></p>
+                                <p class="text-sm text-gray-500">Booked On: <span class="font-semibold text-gray-700">{{ booking.date_booked }}</span></p>
+                            </div>
+                            <span class="text-3xl font-extrabold text-green-600">${{ "%.2f"|format(booking.amount) }}</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-2 md:gap-x-8 text-base text-gray-700">
+                            {% if booking.booking_type == 'flights' %}
+                                <p><strong>Flight:</strong> {{ booking.details }}</p>
+                                <p><strong>Route:</strong> {{ booking.source }} to {{ booking.destination }}</p>
+                                <p><strong>Travel Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Seat Number:</strong> {{ booking.seat_number }}</p>
+                            {% elif booking.booking_type == 'buses' %}
+                                <p><strong>Bus:</strong> {{ booking.details }}</p>
+                                <p><strong>Route:</strong> {{ booking.source }} to {{ booking.destination }}</p>
+                                <p><strong>Travel Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Selected Seats:</strong> {{ ", ".join(booking.selected_seats) }}</p>
+                            {% elif booking.booking_type == 'trains' %}
+                                <p><strong>Train:</strong> {{ booking.details }}</p>
+                                <p><strong>Route:</strong> {{ booking.source }} to {{ booking.destination }}</p>
+                                <p><strong>Travel Date:</strong> {{ booking.travel_date }}</p>
+                                <p><strong>Ticket Number:</strong> {{ booking.ticket_number }}</p>
+                            {% elif booking.booking_type == 'hotels' %}
+                                <p><strong>Hotel:</strong> {{ booking.details }}</p>
+                                <p><strong>Location:</strong> {{ booking.location }}</p>
+                                <p><strong>Check-in:</strong> {{ booking.checkin_date }}</p>
+                                <p><strong>Check-out:</strong> {{ booking.checkout_date }}</p>
+                            {% endif %}
+                            <p class="md:col-span-2"><strong>Payment Method:</strong> {{ booking.payment_method }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center text-gray-600 text-lg mt-10">You have no past bookings yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

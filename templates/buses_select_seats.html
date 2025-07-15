@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats | Travel Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .seat {
+            width: 50px; /* Increased size for better touch target */
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 8px; /* Increased margin for spacing */
+            cursor: pointer;
+            border-radius: 8px; /* More rounded corners */
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .seat:active {
+            transform: scale(0.95); /* Click feedback */
+        }
+        .available {
+            background-color: #e5e7eb; /* Gray-200 */
+            border: 1px solid #9ca3af; /* Gray-400 */
+            color: #374151; /* Gray-700 */
+        }
+        .available:hover {
+            background-color: #d1d5db; /* Gray-300 */
+        }
+        .selected {
+            background-color: #3b82f6 !important; /* Blue-500 */
+            color: white;
+            border-color: #2563eb; /* Blue-600 */
+        }
+        .occupied {
+            background-color: #f87171; /* Red-400 */
+            color: white;
+            cursor: not-allowed;
+            border-color: #dc2626; /* Red-600 */
+            opacity: 0.7;
+        }
+        /* Grid layout for seats */
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 seats per row */
+            gap: 10px;
+            max-width: 300px; /* Limit width to keep grid compact */
+            margin: 0 auto;
+        }
+        @media (min-width: 640px) {
+            .seat-grid {
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center py-8">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-6 text-center">Select Your Seats</h1>
+
+            <div class="mb-8 text-center bg-blue-50 p-4 rounded-md border border-blue-200">
+                <h2 class="text-xl font-bold text-blue-800">{{ bus.name }}</h2>
+                <p class="text-gray-700 mt-1">{{ bus.departure_time }} - {{ bus.arrival_time }}</p>
+                <p class="font-bold text-green-700 text-2xl mt-2">Price: ${{ bus.price }} per seat</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('select_bus_seats', bus_id=bus.id) }}">
+                <div class="seat-grid mb-8">
+                    {% for seat in seats %}
+                    <div class="seat {% if seat.occupied %}occupied{% else %}available{% endif %}
+                                {% if not seat.occupied %}group{% endif %}"
+                         {% if not seat.occupied %}onclick="toggleSeat(this)"{% endif %}>
+                        <input type="checkbox" name="seats" value="{{ seat.number }}"
+                               class="hidden" {% if seat.occupied %}disabled{% endif %}>
+                        <span class="text-gray-800 group-hover:text-blue-900 group-hover:scale-110 transition">{{ seat.number }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="flex justify-center text-sm text-gray-600 mb-6 space-x-4">
+                    <div class="flex items-center">
+                        <span class="block w-4 h-4 rounded-full bg-e5e7eb border border-9ca3af mr-2"></span> Available
+                    </div>
+                    <div class="flex items-center">
+                        <span class="block w-4 h-4 rounded-full bg-3b82f6 mr-2"></span> Selected
+                    </div>
+                    <div class="flex items-center">
+                        <span class="block w-4 h-4 rounded-full bg-f87171 mr-2"></span> Occupied
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-md transition duration-200 text-lg font-semibold shadow-md hover:shadow-lg">
+                    Continue to Payment
+                </button>
+            </form>
+            <p class="text-center mt-4">
+                <a href="{{ url_for('buses_available') }}" class="text-blue-600 hover:text-blue-800 text-sm">Back to Available Buses</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleSeat(element) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            const span = element.querySelector('span');
+
+            // Prevent toggling if seat is occupied
+            if (element.classList.contains('occupied')) {
+                return;
+            }
+
+            checkbox.checked = !checkbox.checked;
+
+            if (checkbox.checked) {
+                element.classList.add('selected');
+                span.classList.remove('text-gray-800');
+                span.classList.add('text-white');
+            } else {
+                element.classList.remove('selected');
+                span.classList.remove('text-white');
+                span.classList.add('text-gray-800');
+            }
+        }
+    </script>
+</body>
+</html>

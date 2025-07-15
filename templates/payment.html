@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6; /* Light Gray */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #2c3e50; /* Dark Blue */
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #34495e; /* Slightly Lighter Dark Blue */
+            margin-bottom: 15px;
+        }
+        form {
+            background-color: #ffffff; /* White */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+        p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        p strong {
+            color: #555;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        div {
+            margin-bottom: 10px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        label {
+            font-size: 16px;
+            color: #555;
+        }
+        button {
+            background-color: #27ae60; /* Green for Complete Payment */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #229a54; /* Darker Green */
+        }
+        .cancel-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .cancel-link a {
+            color: #e74c3c; /* Red for Cancel */
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cancel-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Complete Your Booking</h1>
+    <h2>Booking Details:</h2>
+    <p><strong>Type:</strong> {{ booking.type }}</p>
+    {% if booking.source %}
+    <p><strong>From:</strong> {{ booking.source }}</p>
+    {% endif %}
+    {% if booking.destination %}
+    <p><strong>To:</strong> {{ booking.destination }}</p>
+    {% endif %}
+    {% if booking.date %}
+    <p><strong>Date:</strong> {{ booking.date }}</p>
+    {% endif %}
+    {% if booking.location %}
+    <p><strong>Location:</strong> {{ booking.location }}</p>
+    {% endif %}
+    
+    <form method="POST">
+        <h3>Select Payment Method:</h3>
+        <div>
+            <input type="radio" id="credit" name="method" value="Credit Card" required checked>
+            <label for="credit">Credit Card</label>
+        </div>
+        <div>
+            <input type="radio" id="paypal" name="method" value="PayPal">
+            <label for="paypal">PayPal</label>
+        </div>
+        <div>
+            <input type="radio" id="bank" name="method" value="Bank Transfer">
+            <label for="bank">Bank Transfer</label>
+        </div>
+        <div>
+             <input type="radio" id="upi" name="method" value="upi" required checked>
+            <label for="upi">upi</label>
+        </div>
+        <button type="submit">Complete Payment</button>
+    </form>
+    <p class="cancel-link"><a href="/home">Cancel and Return Home</a></p>
+</body>
+</html>
